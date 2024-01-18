@@ -15,6 +15,9 @@ public class Playlist
     [GraphQLDescription("Describes the playlist, what to expect and entices the user to listen.")]
     public string? Description { get; set; }
 
+    [GraphQLDescription("The playlist's tracks.")]
+    public List<Track> Tracks { get; set; }
+
     public Playlist(string id, string name)
     {
         Id = id;
@@ -33,5 +36,7 @@ public class Playlist
         Id = obj.Id;
         Name = obj.Name;
         Description = obj.Description;
+
+        Tracks = obj.Tracks.Items.Select(item => new Track(item.Track)).ToList();
     }
 }
