@@ -1,0 +1,299 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Airlock Listings REST API",
+    "description": "Provides listings information and the capability to create and update listings for the Airlock app.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://rt-airlock-services-listing.herokuapp.com"
+    }
+  ],
+  "paths": {
+    "/featured-listings": {
+      "get": {
+        "description": "Get a list of featured listings for the homepage",
+        "operationId": "get-featured-listings",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Listing"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/listings": {
+      "get": {
+        "description": "Retrieve listings based on query params",
+        "operationId": "get-listings",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Listing"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Could not find listing with specified ID"
+          }
+        }
+      },
+      "post": {
+        "description": "Create a listing",
+        "operationId": "create-listing",
+        "requestBody": {
+          "description": "The listing details to create",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ListingInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Listing"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/listings/{listing_id}": {
+      "get": {
+        "description": "Get full details of a listing",
+        "operationId": "get-listing-details",
+        "parameters": [
+          {
+            "name": "listing_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Listing"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Could not find listing with specified ID"
+          }
+        }
+      }
+    },
+    "/listings/{listing_id}/amenities": {
+      "get": {
+        "description": "Get full details of the amenities for a specified listing",
+        "operationId": "get-listing-amenities",
+        "parameters": [
+          {
+            "name": "listing_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Amenity"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Could not find listing with specified ID"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Listing": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": false
+          },
+          "title": {
+            "type": "string",
+            "nullable": false
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "costPerNight": {
+            "type": "number",
+            "nullable": true
+          },
+          "hostId": {
+            "type": "string",
+            "nullable": true
+          },
+          "locationType": {
+            "type": "string",
+            "nullable": true
+          },
+          "numOfBeds": {
+            "type": "integer",
+            "nullable": true
+          },
+          "photoThumbnail": {
+            "type": "string",
+            "nullable": true
+          },
+          "isFeatured": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "latitude": {
+            "type": "number",
+            "nullable": true
+          },
+          "longitude": {
+            "type": "number",
+            "nullable": true
+          },
+          "closedForBookings": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "amenities": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/Amenity"
+            }
+          }
+        }
+      },
+      "Amenity": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": false
+          },
+          "category": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ListingInput": {
+        "type": "object",
+        "properties": {
+          "listing": {
+            "type": "object",
+            "schema": {
+              "$ref": "#/components/schemas/ListingInputObject"
+            }
+          }
+        }
+      },
+      "ListingInputObject": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "nullable": false
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "costPerNight": {
+            "type": "number",
+            "nullable": true
+          },
+          "numOfBeds": {
+            "type": "integer",
+            "nullable": true
+          },
+          "closedForBookings": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "amenities": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}
