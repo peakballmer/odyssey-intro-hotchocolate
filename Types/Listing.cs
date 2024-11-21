@@ -19,10 +19,14 @@ public class Listing
     [GraphQLDescription("Indicates whether listing is closed for bookings (on hiatus)")]
     public bool? ClosedForBookings { get; set; }
 
-    public Listing(string id, string title)
+    [GraphQLDescription("The listing's description")]
+    public string Description { get; set; }
+
+    public Listing(string id, string title, string description)
     {
         Id = id;
         Title = title;
+        Description = description;
     }
 
     public Listing(ListingsDataSource.Listing obj)
@@ -32,5 +36,6 @@ public class Listing
         NumOfBeds = obj.NumOfBeds;
         CostPerNight = obj.CostPerNight;
         ClosedForBookings = obj.ClosedForBookings;
+        Description = obj.Description;
     }
 }
