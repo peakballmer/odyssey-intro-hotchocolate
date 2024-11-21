@@ -24,4 +24,13 @@ public class Listing
         Id = id;
         Title = title;
     }
+
+    public Listing(ListingsDataSource.Listing obj)
+    {
+        Id = obj.Id;
+        Title = obj.Title;
+        NumOfBeds = obj.NumOfBeds;
+        CostPerNight = obj.CostPerNight;
+        ClosedForBookings = obj.ClosedForBookings;
+    }
 }
