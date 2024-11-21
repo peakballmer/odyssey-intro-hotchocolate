@@ -1,8 +1,11 @@
+using ListingsDataSource;
 using Odyssey.IntroHCListings.Types;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddGraphQLServer().AddQueryType<Query>().AddType<Listing>();
+builder.Services.AddHttpClient<ListingsService>();
+
+builder.Services.AddGraphQLServer().AddQueryType<Query>();
 
 builder
     .Services
