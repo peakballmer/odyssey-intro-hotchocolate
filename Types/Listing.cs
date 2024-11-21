@@ -22,11 +22,16 @@ public class Listing
     [GraphQLDescription("The listing's description")]
     public string Description { get; set; }
 
-    public Listing(string id, string title, string description)
+    [GraphQLDescription("The amenities available for this listing")]
+    public List<Amenity> Amenities { get; set; }
+
+    public Listing(string id, string title, string description, List<Amenity>? amenities)
     {
         Id = id;
         Title = title;
         Description = description;
+
+        Amenities = amenities;
     }
 
     public Listing(ListingsDataSource.Listing obj)
@@ -37,5 +42,7 @@ public class Listing
         CostPerNight = obj.CostPerNight;
         ClosedForBookings = obj.ClosedForBookings;
         Description = obj.Description;
+
+        Amenities = obj.Amenities.Select(amenity => new Amenity(amenity)).ToList();
     }
 }
