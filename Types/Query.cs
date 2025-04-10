@@ -2,8 +2,9 @@ namespace Odyssey.MusicMatcher;
 
 public class Query
 {
-  public string Hello()
-  {
-    return "Hello world";
-  }
+    // Hello() is an example of a query resolver.
+    public string Hello()
+    {
+        return "Hello world";
+    }
 }
